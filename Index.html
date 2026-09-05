@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.jpg">
+<meta name="theme-color" content="#FFD500">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Warung Mbak Wiwin</title>
@@ -365,7 +367,7 @@
                                 <input type="text" id="setOwnerName" class="brutal-input bg-white" required>
                             </div>
                             <div class="mb-6">
-                                <label class="block font-bold mb-1">Password Baru (Sandi Login Owner)</label>
+                                <label class="block font-bold mb-1">Password (Sandi Login Owner)</label>
                                 <div class="relative">
                                     <input type="password" id="setOwnerPass" class="brutal-input pr-10 bg-white" required>
                                     <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="window.togglePassword('setOwnerPass', 'iconSetOwnerPass')" id="iconSetOwnerPass">
@@ -650,14 +652,18 @@
 };
     // ======================================================= //
 
-    // PWA: Inject Service Worker Dynamically
-    try {
-        if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
-            const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('fetch', e => {});`;
-            const blob = new Blob([swCode], {type: 'application/javascript'});
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(e => { console.warn("PWA SW Register ditolak oleh env/browser (wajar pada preview)."); });
-        }
-    } catch (e) { console.warn("Blob SW diabaikan."); }
+    // PWA: Registrasi Service Worker Standar
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker berhasil didaftarkan');
+                })
+                .catch(err => {
+                    console.warn('ServiceWorker gagal didaftarkan: ', err);
+                });
+        });
+    }
 
     let app, auth, db;
     if (!IS_PREVIEW) {
@@ -1208,13 +1214,14 @@
     window.renderAdminSettings = () => {
         document.getElementById('setStoreName').value = STATE.data.settings.storeName || ''; document.getElementById('setBankName').value = STATE.data.settings.bankName || '';
         document.getElementById('setBankAcc').value = STATE.data.settings.bankAcc || ''; document.getElementById('setOwnerName').value = STATE.data.settings.ownerName || '';
+        document.getElementById('setOwnerPass').value = STATE.data.settings.ownerPass || '';
         STATE.tempLogoBase64 = STATE.data.settings.logoUrl || ''; document.getElementById('logoPreview').innerHTML = STATE.tempLogoBase64 ? `<img src="${STATE.tempLogoBase64}" class="h-12 mt-2 border border-black">` : '';
     };
 
     window.saveSettings = async e => {
         e.preventDefault(); showLoad();
         const payload = { storeName: document.getElementById('setStoreName').value, bankName: document.getElementById('setBankName').value, bankAcc: document.getElementById('setBankAcc').value, ownerName: document.getElementById('setOwnerName').value, logoUrl: STATE.tempLogoBase64, ownerPass: document.getElementById('setOwnerPass').value };
-        try { if(!IS_PREVIEW) { await updateDoc(doc(db, 'settings', 'app_config'), payload); await fetchPublicData(); } else { STATE.data.settings = {...STATE.data.settings, ...payload}; } document.getElementById('setOwnerPass').value = ''; updateHeader(); alert('Pengaturan tersimpan!'); } catch(e) { alert(e.message); } finally { hideLoad(); }
+        try { if(!IS_PREVIEW) { await updateDoc(doc(db, 'settings', 'app_config'), payload); await fetchPublicData(); } else { STATE.data.settings = {...STATE.data.settings, ...payload}; } updateHeader(); alert('Pengaturan tersimpan!'); } catch(e) { alert(e.message); } finally { hideLoad(); }
     };
 
     window.togglePassword = (inputId, iconId) => { const input = document.getElementById(inputId); input.type = input.type === "password" ? "text" : "password"; };
