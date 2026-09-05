@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<head>
 <html lang="id">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#FFD500">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Warung Mbak Wiwin</title>
-    <link rel="icon" type="png" href="icon-192.png">
-    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Warung%20App%22%2C%22short_name%22%3A%22Warung%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%2F%22%2C%22background_color%22%3A%22%23f4f4f0%22%2C%22theme_color%22%3A%22%23FFD500%22%7D">
+    
+    <!-- PWA & Pengaturan Standalone -->
+    <meta name="theme-color" content="#FFD500">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    
+    <!-- Konfigurasi untuk iOS & Android agar tampil penuh (bukan browser) -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Warung">
+    <link rel="apple-touch-icon" href="icon-192.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
