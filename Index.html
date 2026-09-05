@@ -44,12 +44,14 @@
         .d-none { display: none !important; }
 
         @media print {
-            #gasapp-root * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; display: flex; justify-content: center; }
+            @page { margin: 0; size: 88mm auto; }
+            body, html { margin: 0; padding: 0; background: white; height: max-content !important; min-height: 0 !important; }
+            #gasapp-root { height: max-content !important; min-height: 0 !important; position: static !important; overflow: visible !important; }
+            #gasapp-root > *:not(#printArea) { display: none !important; }
+            #printArea { display: block !important; position: static; width: 100%; margin: 0; padding: 0; height: max-content !important; }
             .no-print { display: none !important; }
             .brutal-box { border: 1px solid black; box-shadow: none; }
-            .receipt-88mm { border: none; padding: 0; width: 100%; max-width: 332px; }
+            .receipt-88mm { border: none; padding: 2mm; width: 100%; max-width: 88mm; margin: 0 auto; color: black; }
         }
         
         #globalLoader { position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -945,7 +947,13 @@
         document.getElementById(targetId).innerHTML = html;
     };
 
-    window.printReceiptPopup = () => { document.getElementById('printArea').innerHTML = document.getElementById('printReceiptCore').outerHTML; window.print(); };
+    window.printReceiptPopup = () => { 
+        const pa = document.getElementById('printArea');
+        pa.innerHTML = document.getElementById('printReceiptCore').outerHTML; 
+        pa.classList.remove('d-none');
+        window.print(); 
+        setTimeout(() => pa.classList.add('d-none'), 800);
+    };
     window.downloadReceiptImage = async () => { const canvas = await html2canvas(document.getElementById('printReceiptCore'), { scale: 2 }); const link = document.createElement('a'); link.download = 'Nota_Warung.png'; link.href = canvas.toDataURL('image/png'); link.click(); };
     window.shareReceiptWA = () => { if(!STATE.currentReceiptId) return; const link = window.location.href.split('?')[0] + '?receipt=' + STATE.currentReceiptId; window.shareToWA(link, 'Berikut nota pesanan Anda. Klik link untuk melihat:'); };
     window.viewDebtReceipt = custId => { STATE.currentReceiptId = null; window.generateReceiptHtml({ custId }, null, 'actualReceiptPrint', 'DEBT_RECAP'); window.openModal('modalReceiptPopup'); };
