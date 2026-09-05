@@ -1,6 +1,6 @@
 {
   "name": "Warung Mbak Wiwin",
-  "short_name": "Warung POS",
+  "short_name": "Warung Mbak Wiwin",
   "description": "Aplikasi Kasir dan Katalog Warung Mbak Wiwin",
   "start_url": "/",
   "display": "standalone",
