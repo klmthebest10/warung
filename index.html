@@ -235,7 +235,10 @@
 
             <section id="pageAdminPOS" class="app-page d-none">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-                    <h2 class="text-2xl md:text-3xl font-bold uppercase bg-main px-2 border-2 border-black border-l-8 border-l-dark">KASIR</h2>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-2xl md:text-3xl font-bold uppercase bg-main px-2 border-2 border-black border-l-8 border-l-dark">KASIR</h2>
+                        <button onclick="window.openAdminWaitingList()" id="btnAdminWaiting" class="d-none brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm flex items-center gap-1 animate-pulse">📝 Waiting List (<span id="adminWaitCount">0</span>)</button>
+                    </div>
                     <div class="flex gap-2 w-full sm:w-auto">
                         <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent flex-1 sm:flex-none px-4 py-3 md:py-2 text-sm text-black">+ Produk</button>
                         <button onclick="window.openCart()" class="brutal-btn bg-dark flex-1 sm:flex-none text-white px-4 py-3 md:py-2 text-sm flex items-center justify-center gap-2 relative">
@@ -372,6 +375,12 @@
                                 </div>
                             </div>
                             <div class="mb-4 mt-6 border-t-2 border-black pt-4">
+                                <h4 class="font-bold mb-2">Fitur Pelanggan</h4>
+                                <label class="flex items-center gap-2 font-bold cursor-pointer bg-yellow-100 p-3 border-2 border-black w-full">
+                                    <input type="checkbox" id="setPosEnabled" class="w-5 h-5 accent-black"> Aktifkan POS Mandiri (Pelanggan bisa buat pesanan)
+                                </label>
+                            </div>
+                            <div class="mb-4 mt-6 border-t-2 border-black pt-4">
                                 <h4 class="font-bold mb-2">Akses Login Pemilik</h4>
                                 <label class="block font-bold mb-1">Username Owner</label>
                                 <input type="text" id="setOwnerName" class="brutal-input bg-white" required>
@@ -392,6 +401,47 @@
             </section>
         </main>
     </div> <!-- End MainAppWrapper -->
+
+    <!-- Modal Keranjang Pelanggan/Umum -->
+    <div id="modalCustCart" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="brutal-box bg-white w-full max-w-lg max-h-[95vh] flex flex-col relative overflow-hidden">
+            <button onclick="window.closeModal('modalCustCart')" class="absolute top-2 right-2 md:-top-4 md:-right-4 bg-danger text-white border-2 border-black w-10 h-10 font-bold text-xl hover:bg-black transition-colors rounded-full z-30 shadow-brutal-sm">X</button>
+            <div class="p-4 border-b-4 border-black bg-accent shrink-0"><h2 class="text-xl md:text-2xl font-bold uppercase">Keranjang Anda</h2></div>
+            <div class="p-4 overflow-y-auto flex-1 bg-white">
+                <div id="custCartItemsList" class="mb-4 border-b-2 border-black pb-4"></div>
+                <div class="flex justify-between items-center font-bold mb-4"><span>Subtotal:</span><span id="custCartTotal">₩ 0</span></div>
+                <div class="mb-3">
+                    <label class="block font-bold mb-1 text-sm">Nama Pemesan</label>
+                    <input type="text" id="custOrderName" class="brutal-input text-sm bg-white" placeholder="Masukkan nama..." required>
+                </div>
+                <div class="mb-3">
+                    <label class="block font-bold mb-1 text-sm">Keterangan Tambahan (Opsional)</label>
+                    <textarea id="custOrderNotes" class="brutal-input text-sm bg-white" rows="2" placeholder="Contoh: Pedas, Jangan pakai saos..."></textarea>
+                </div>
+            </div>
+            <div class="p-4 border-t-4 border-black bg-gray-100 flex gap-2 shrink-0">
+                <button onclick="window.submitCustOrder()" class="brutal-btn w-full bg-main text-black py-3 text-sm md:text-lg uppercase">Pesan dan Tunggu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin Waiting List -->
+    <div id="modalAdminWait" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="brutal-box bg-white w-full max-w-3xl max-h-[95vh] flex flex-col relative overflow-hidden">
+            <button onclick="window.closeModal('modalAdminWait')" class="absolute top-2 right-2 bg-danger text-white border-2 border-black w-8 h-8 font-bold text-sm">X</button>
+            <div class="p-4 border-b-4 border-black bg-danger text-white shrink-0"><h2 class="text-xl font-bold uppercase">Pesanan Masuk (Waiting List)</h2></div>
+            <div class="p-4 overflow-y-auto flex-1 bg-gray-100" id="adminWaitListArea"></div>
+        </div>
+    </div>
+
+    <!-- Modal Customer Waiting List -->
+    <div id="modalCustWait" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="brutal-box bg-white w-full max-w-md max-h-[95vh] flex flex-col relative overflow-hidden">
+            <button onclick="window.closeModal('modalCustWait')" class="absolute top-2 right-2 bg-danger text-white border-2 border-black w-8 h-8 font-bold text-sm">X</button>
+            <div class="p-4 border-b-4 border-black bg-accent shrink-0"><h2 class="text-xl font-bold uppercase">Pesanan Anda</h2></div>
+            <div class="p-4 overflow-y-auto flex-1 bg-white" id="custWaitListArea"></div>
+        </div>
+    </div>
 
     <div id="modalCart" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
         <div class="brutal-box bg-white w-full max-w-2xl max-h-[95vh] flex flex-col relative overflow-hidden">
@@ -682,10 +732,10 @@
 
     // STATE MANAGER
     let STATE = {
-        user: null, cart: [], ongkir: 0, editCart: [],
+        user: null, cart: [], ongkir: 0, editCart: [], custCart: [], waitingList: [],
         activeCategoryPOS: null, activeCategoryPub: null, activeCategoryCust: null,
         historyFilter: 'all', tempProdImgBase64: '', tempLogoBase64: '', currentReceiptId: null,
-        data: { settings: {}, categories: [], products: [], customers: [], orders: [] }
+        data: { settings: { posEnabled: false }, categories: [], products: [], customers: [], orders: [] }
     };
 
     if (IS_PREVIEW) {
@@ -834,16 +884,19 @@
 
     function updateNavMenu() {
         const nav = document.getElementById('navMenu'); const iconClasses = "brutal-btn bg-white px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm whitespace-nowrap";
-        if(!STATE.user) { nav.innerHTML = `<button onclick="window.showPage('pageLogin')" class="${iconClasses} !bg-main">Masuk</button>`; }
+        const posMenu = STATE.data.settings.posEnabled ? `<button onclick="window.openCustWaitList()" class="${iconClasses} !bg-accent hidden sm:inline-block">Menunggu Pesanan</button><button onclick="window.openCustCartModal()" class="${iconClasses} !bg-black !text-white relative">🛒 <span id="custCartCount" class="absolute -top-2 -right-2 bg-danger text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">0</span></button>` : '';
+        if(!STATE.user) { nav.innerHTML = `${posMenu}<button onclick="window.showPage('pageLogin')" class="${iconClasses} !bg-main">Masuk</button>`; }
         else if (STATE.user.role === 'admin') { nav.innerHTML = `<button onclick="window.showPage('pageAdminPOS')" class="${iconClasses} !bg-main hidden sm:block">POS Kasir</button><button onclick="window.showPage('pageAdminMgmt'); window.renderAdminProducts();" class="${iconClasses}">Kelola Admin</button><button onclick="window.logout()" class="${iconClasses} !bg-danger !text-white">Keluar</button>`; }
-        else { nav.innerHTML = `<span class="font-bold text-xs md:text-sm mr-2 hidden sm:inline-block">Hi, ${escapeHTML(STATE.user.name)}</span><button onclick="window.logout()" class="${iconClasses} !bg-danger !text-white">Keluar</button>`; }
+        else { nav.innerHTML = `<span class="font-bold text-xs md:text-sm mr-2 hidden sm:inline-block">Hi, ${escapeHTML(STATE.user.name)}</span>${posMenu}<button onclick="window.logout()" class="${iconClasses} !bg-danger !text-white">Keluar</button>`; }
+        window.updateCustCartUI();
     }
 
     function buildProductCard(p, mode) {
         const imgHtml = p.img ? `<img src="${p.img}" class="w-full h-24 md:h-32 object-cover border-b-2 border-black pointer-events-none">` : `<div class="w-full h-24 md:h-32 bg-gray-200 border-b-2 border-black flex items-center justify-center text-gray-500 font-bold pointer-events-none text-xs">NO IMAGE</div>`;
         let opacity = p.available ? 'opacity-100' : 'opacity-50';
-        if(mode === 'pos') {
-            const actionClass = p.available ? 'cursor-pointer hover:bg-yellow-100 active:scale-95' : 'cursor-not-allowed'; const clickAttr = p.available ? `onclick="window.addToCart('${p.id}')"` : '';
+        if(mode === 'pos' || STATE.data.settings.posEnabled) {
+            const actionClass = p.available ? 'cursor-pointer hover:bg-yellow-100 active:scale-95' : 'cursor-not-allowed'; 
+            const clickAttr = p.available ? `onclick="${mode === 'pos' ? `window.addToCart('${p.id}')` : `window.addCustCart('${p.id}')`}"` : '';
             const btnHTML = p.available ? `<div class="w-full text-center border-2 border-black bg-main py-1 md:py-2 mt-2 text-xs md:text-sm uppercase font-bold">Tambah</div>` : `<div class="w-full text-center border-2 border-black bg-gray-300 py-1 md:py-2 mt-2 text-xs md:text-sm uppercase font-bold text-gray-500">Kosong</div>`;
             return `<div ${clickAttr} class="brutal-box flex flex-col h-full transition-transform ${opacity} ${actionClass}">${imgHtml}<div class="p-2 flex-1 flex flex-col pointer-events-none"><span class="text-[10px] md:text-xs font-bold text-gray-600 uppercase mb-1">${escapeHTML(p.cat)}</span><h3 class="font-bold text-xs md:text-sm leading-tight mb-2 flex-1">${escapeHTML(p.name)}</h3><div class="font-bold text-sm md:text-lg bg-black text-white px-2 py-1 inline-block self-start">${formatWon(p.price)}</div>${btnHTML}</div></div>`;
         }
@@ -1231,12 +1284,13 @@
         document.getElementById('setStoreName').value = STATE.data.settings.storeName || ''; document.getElementById('setBankName').value = STATE.data.settings.bankName || '';
         document.getElementById('setBankAcc').value = STATE.data.settings.bankAcc || ''; document.getElementById('setOwnerName').value = STATE.data.settings.ownerName || '';
         document.getElementById('setOwnerPass').value = STATE.data.settings.ownerPass || '';
+        document.getElementById('setPosEnabled').checked = STATE.data.settings.posEnabled || false;
         STATE.tempLogoBase64 = STATE.data.settings.logoUrl || ''; document.getElementById('logoPreview').innerHTML = STATE.tempLogoBase64 ? `<img src="${STATE.tempLogoBase64}" class="h-12 mt-2 border border-black">` : '';
     };
 
     window.saveSettings = async e => {
         e.preventDefault(); showLoad();
-        const payload = { storeName: document.getElementById('setStoreName').value, bankName: document.getElementById('setBankName').value, bankAcc: document.getElementById('setBankAcc').value, ownerName: document.getElementById('setOwnerName').value, logoUrl: STATE.tempLogoBase64, ownerPass: document.getElementById('setOwnerPass').value };
+        const payload = { storeName: document.getElementById('setStoreName').value, bankName: document.getElementById('setBankName').value, bankAcc: document.getElementById('setBankAcc').value, ownerName: document.getElementById('setOwnerName').value, logoUrl: STATE.tempLogoBase64, ownerPass: document.getElementById('setOwnerPass').value, posEnabled: document.getElementById('setPosEnabled').checked };
         try { if(!IS_PREVIEW) { await updateDoc(doc(db, 'settings', 'app_config'), payload); await fetchPublicData(); } else { STATE.data.settings = {...STATE.data.settings, ...payload}; } updateHeader(); alert('Pengaturan tersimpan!'); } catch(e) { alert(e.message); } finally { hideLoad(); }
     };
 
@@ -1248,6 +1302,82 @@
         document.getElementById(id).classList.remove('d-none'); 
     };
     window.closeModal = id => { document.getElementById(id).classList.add('d-none'); if(id === 'modalAddProduct') { document.getElementById('prodId').value = ''; document.getElementById('formProduct').reset(); document.getElementById('modalProductTitle').textContent = 'Tambah Produk'; STATE.tempProdImgBase64 = ''; } };
+
+// --- LOGIKA POS MANDIRI (PELANGGAN) ---
+    window.addCustCart = productId => { 
+        const p = STATE.data.products.find(x => x.id === productId); if(!p || !p.available) return; 
+        const exist = STATE.custCart.find(x => x.id === productId); if(exist) exist.qty++; else STATE.custCart.push({ id: p.id, name: p.name, price: p.price, qty: 1 }); 
+        window.updateCustCartUI(); 
+    };
+    
+    window.updateCustCartUI = () => { 
+        const badge = document.getElementById('custCartCount'); if(badge) badge.textContent = STATE.custCart.reduce((sum, item) => sum + item.qty, 0); 
+        if(!document.getElementById('modalCustCart')?.classList.contains('d-none')) window.renderCustCartModal(); 
+    };
+
+    window.openCustCartModal = () => {
+        if(STATE.user && STATE.user.role === 'customer') document.getElementById('custOrderName').value = STATE.user.name;
+        window.renderCustCartModal(); window.openModal('modalCustCart');
+    };
+
+    window.renderCustCartModal = () => {
+        const list = document.getElementById('custCartItemsList');
+        if(STATE.custCart.length === 0) list.innerHTML = '<p class="font-bold text-center p-4">Keranjang kosong</p>';
+        else list.innerHTML = STATE.custCart.map((item, index) => `<div class="flex justify-between items-center mb-2 bg-gray-50 p-2 border-2 border-black"><div class="flex-1"><h4 class="font-bold text-xs md:text-sm leading-tight">${escapeHTML(item.name)}</h4><div class="text-xs md:text-sm">${formatWon(item.price)}</div></div><div class="flex items-center gap-1 md:gap-2"><button onclick="window.changeCustQty(${index}, -1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-white border-2 border-black">-</button><span class="w-6 text-center font-bold text-sm md:text-base">${item.qty}</span><button onclick="window.changeCustQty(${index}, 1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-main border-2 border-black">+</button></div></div>`).join('');
+        document.getElementById('custCartTotal').textContent = formatWon(STATE.custCart.reduce((s, i) => s + (i.price * i.qty), 0));
+    };
+    
+    window.changeCustQty = (index, delta) => { STATE.custCart[index].qty += delta; if(STATE.custCart[index].qty <= 0) STATE.custCart.splice(index, 1); window.updateCustCartUI(); };
+
+    window.submitCustOrder = async () => {
+        if(STATE.custCart.length === 0) return alert('Keranjang kosong!');
+        const nama = document.getElementById('custOrderName').value.trim(); if(!nama) return alert('Nama wajib diisi!');
+        if(!confirm('Apakah pesanan sudah benar? Pesan dan Tunggu sekarang?')) return;
+        
+        const payload = { id: 'WAIT' + new Date().getTime(), date: new Date().toISOString(), buyerName: nama, notes: document.getElementById('custOrderNotes').value, items: STATE.custCart, total: STATE.custCart.reduce((s, i) => s + (i.price * i.qty), 0), status: 'waiting', userId: STATE.user ? STATE.user.id : null };
+        
+        showLoad();
+        try {
+            if(!IS_PREVIEW) await setDoc(doc(db, 'waiting_list', payload.id), payload);
+            STATE.waitingList.push(payload); STATE.custCart = []; document.getElementById('custOrderNotes').value = '';
+            window.updateCustCartUI(); window.closeModal('modalCustCart'); alert('Pesanan telah dibuat, mohon tunggu!'); window.checkAdminWaitList();
+        } catch(e) { alert("Gagal pesan: "+e.message); } finally { hideLoad(); }
+    };
+
+    window.openCustWaitList = () => {
+        const list = STATE.waitingList.filter(x => x.userId === (STATE.user ? STATE.user.id : null));
+        document.getElementById('custWaitListArea').innerHTML = list.length ? list.map(w => `<div class="brutal-box p-3 mb-3"><div class="font-bold border-b-2 border-black pb-1 mb-2">${safeDate(w.date)}</div>${w.items.map(i=>`<div class="text-sm">- ${i.qty}x ${escapeHTML(i.name)}</div>`).join('')}<div class="mt-2 font-bold bg-yellow-200 p-1">Total: ${formatWon(w.total)}</div><div class="mt-1 text-xs bg-gray-200 p-1">Status: Menunggu Kasir</div></div>`).join('') : '<p>Tidak ada pesanan.</p>';
+        window.openModal('modalCustWait');
+    };
+
+    // --- LOGIKA ADMIN WAITING LIST ---
+    const timeAgo = (dateStr) => { const diff = Math.floor((new Date() - new Date(dateStr)) / 60000); return diff < 1 ? 'Baru saja' : diff + ' menit lalu'; };
+    
+    window.checkAdminWaitList = async () => {
+        if(STATE.user && STATE.user.role === 'admin') {
+            if(!IS_PREVIEW) { try { const snap = await getDocs(collection(db, 'waiting_list')); STATE.waitingList = snap.docs.map(d=>d.data()); } catch(e){} }
+            const btn = document.getElementById('btnAdminWaiting'); const c = STATE.waitingList.length;
+            if(btn) { btn.classList.toggle('d-none', c === 0); document.getElementById('adminWaitCount').textContent = c; }
+        }
+    };
+    setInterval(window.checkAdminWaitList, 15000); // Cek berkala 15 detik
+
+    window.openAdminWaitingList = () => {
+        const sorted = [...STATE.waitingList].sort((a,b) => new Date(a.date) - new Date(b.date)); // Paling lama di atas
+        document.getElementById('adminWaitListArea').innerHTML = sorted.length ? sorted.map(w => `<div class="brutal-box bg-white p-4 mb-4 border-l-8 border-l-main"><div class="flex justify-between items-start border-b-2 border-black pb-2 mb-2"><div><div class="font-bold text-lg uppercase">${escapeHTML(w.buyerName)}</div><div class="text-xs text-gray-500">${timeAgo(w.date)}</div></div><button onclick="window.pullToCart('${w.id}')" class="brutal-btn bg-success px-3 py-1 text-xs font-bold">Kirim ke Keranjang</button></div><div>${w.items.map(i=>`<div class="text-sm font-bold">${i.qty}x ${escapeHTML(i.name)}</div>`).join('')}</div>${w.notes ? `<div class="mt-2 p-2 bg-gray-100 text-xs italic border-2 border-black">Catatan: ${escapeHTML(w.notes)}</div>` : ''}</div>`).join('') : '<p class="font-bold">Tidak ada pesanan masuk.</p>';
+        window.openModal('modalAdminWait');
+    };
+
+    window.pullToCart = async (waitId) => {
+        if(!confirm('Tarik pesanan ini ke keranjang kasir?')) return;
+        const w = STATE.waitingList.find(x => x.id === waitId); if(!w) return;
+        STATE.cart = [...w.items]; window.updateCartUI();
+        
+        try {
+            if(!IS_PREVIEW) await deleteDoc(doc(db, 'waiting_list', waitId));
+            STATE.waitingList = STATE.waitingList.filter(x => x.id !== waitId); window.closeModal('modalAdminWait'); window.openCart(); window.checkAdminWaitList();
+        } catch(e) { alert("Gagal tarik: "+e.message); }
+    };
 
 </script>
 </body>
