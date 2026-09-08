@@ -98,7 +98,10 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl md:text-3xl font-bold uppercase border-l-8 border-main pl-3">Menu Tersedia</h2>
                 </div>
-                <div class="flex overflow-x-auto gap-3 py-2 mb-4 no-scrollbar" id="publicCategoryFilter"></div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="publicCategoryFilter"></div>
+                    <button onclick="window.openGlobalSearch('public')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="publicProductGrid"></div>
             </section>
 
@@ -167,6 +170,14 @@
                 </div>
             </section>
 
+            <section id="pageCustWaitList" class="app-page d-none">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="text-2xl md:text-3xl font-bold uppercase border-l-8 border-accent pl-3">Pesanan Anda</h2>
+                    <button onclick="window.goHome()" class="brutal-btn bg-white px-4 py-2 text-sm text-black w-full sm:w-auto">Kembali ke Menu Utama</button>
+                </div>
+                <div id="custWaitListAreaPage" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </section>
+
             <section id="pageCustomerDashboard" class="app-page d-none">
                 <div id="custBankInfo" class="text-xs italic opacity-80 mb-1"></div>
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
@@ -186,7 +197,10 @@
                 </div>
                 
                 <div id="custCatalogArea">
-                    <div class="flex overflow-x-auto gap-3 py-2 mb-4 no-scrollbar" id="custCategoryFilter"></div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="custCategoryFilter"></div>
+                        <button onclick="window.openGlobalSearch('customer')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                    </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="custProductGrid"></div>
                 </div>
                 
@@ -237,7 +251,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
                     <div class="flex items-center gap-2">
                         <h2 class="text-2xl md:text-3xl font-bold uppercase bg-main px-2 border-2 border-black border-l-8 border-l-dark">KASIR</h2>
-                        <button onclick="window.openAdminWaitingList()" id="btnAdminWaiting" class="d-none brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm flex items-center gap-1 animate-pulse">📝 Waiting List (<span id="adminWaitCount">0</span>)</button>
+                        <button onclick="window.openAdminWaitingList()" id="btnAdminWaiting" class="d-none brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm flex items-center gap-1 animate-pulse">📝 Waiting List (<span id="adminWaitCount">0</span>) | 🔥 Belum Masak: <span id="adminUncookedCount">0</span></button>
                     </div>
                     <div class="flex gap-2 w-full sm:w-auto">
                         <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent flex-1 sm:flex-none px-4 py-3 md:py-2 text-sm text-black">+ Produk</button>
@@ -246,7 +260,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex overflow-x-auto gap-3 py-2 mb-4 no-scrollbar" id="adminPosCategoryFilter"></div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="adminPosCategoryFilter"></div>
+                    <button onclick="window.openGlobalSearch('pos')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="adminPosProductGrid"></div>
             </section>
 
@@ -277,9 +294,15 @@
 
                 <!-- Admin: Products -->
                 <div id="admin_products" class="admin-content">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
                         <h3 class="text-xl font-bold uppercase">Kelola Produk</h3>
-                        <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent px-4 py-2 text-sm">+ Tambah</button>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <div class="relative flex-1 sm:w-48">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-lg">🔍</span>
+                                <input type="text" id="adminProductSearch" onkeyup="window.renderAdminProducts()" placeholder="Cari produk..." class="brutal-input bg-white py-2 pl-8 pr-2 text-sm w-full h-full">
+                            </div>
+                            <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent px-4 py-2 text-sm whitespace-nowrap">+ Tambah</button>
+                        </div>
                     </div>
                     <div class="brutal-box bg-white overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[600px]">
@@ -334,10 +357,15 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
                         <h3 class="text-xl font-bold uppercase">Riwayat & Pendapatan</h3>
                         <div class="flex gap-2 flex-wrap">
-                            <button onclick="window.filterAdminHistory('all')" id="flt_all" class="hist-filter brutal-btn bg-black text-white px-3 py-1 text-sm">Semua</button>
-                            <button onclick="window.filterAdminHistory('day')" id="flt_day" class="hist-filter brutal-btn bg-white px-3 py-1 text-sm">Hari Ini</button>
+                            <button onclick="window.filterAdminHistory('day')" id="flt_day" class="hist-filter brutal-btn bg-black text-white px-3 py-1 text-sm">Hari Ini</button>
                             <button onclick="window.filterAdminHistory('week')" id="flt_week" class="hist-filter brutal-btn bg-white px-3 py-1 text-sm">7 Hari</button>
                             <button onclick="window.filterAdminHistory('month')" id="flt_month" class="hist-filter brutal-btn bg-white px-3 py-1 text-sm">Bulan Ini</button>
+                            <select onchange="window.filterAdminHistory(this.value)" id="flt_dropdown" class="hist-filter brutal-btn bg-white px-2 py-1 text-sm border-2 border-black outline-none font-bold">
+                                <option value="">Rentang Waktu ▼</option>
+                                <option value="3month" id="opt_3month">3 Bulan Terakhir</option>
+                                <option value="6month" id="opt_6month">6 Bulan Terakhir</option>
+                                <option value="1year" id="opt_1year">1 Tahun Terakhir</option>
+                            </select>
                         </div>
                     </div>
 
@@ -395,6 +423,21 @@
                                 <label class="flex items-center gap-2 font-bold cursor-pointer bg-yellow-100 p-3 border-2 border-black w-full">
                                     <input type="checkbox" id="setPosEnabled" class="w-5 h-5 accent-black"> Aktifkan POS Mandiri (Pelanggan bisa buat pesanan)
                                 </label>
+                            </div>
+                            <div class="mb-4 mt-6 border-t-2 border-black pt-4">
+                                <h4 class="font-bold mb-2">Manajemen Data Riwayat</h4>
+                                <label class="flex items-center gap-2 font-bold cursor-pointer bg-red-100 p-3 border-2 border-black w-full mb-2">
+                                    <input type="checkbox" id="setAutoReset" class="w-5 h-5 accent-black" onchange="window.toggleAutoResetConfig()"> Aktifkan Auto-Hapus Riwayat (Permanen)
+                                </label>
+                                <div id="autoResetConfigWrapper" class="d-none pl-2 border-l-4 border-black mb-2">
+                                    <label class="block font-bold mb-1 text-sm">Hapus Otomatis Jika Usia Data Melewati:</label>
+                                    <select id="setResetPeriod" class="brutal-input bg-white w-full">
+                                        <option value="3">3 Bulan</option>
+                                        <option value="6">6 Bulan</option>
+                                        <option value="12">1 Tahun</option>
+                                    </select>
+                                </div>
+                                <p class="text-[10px] md:text-xs text-gray-600 italic leading-tight">*Jika OFF, data transaksi tetap terhapus otomatis setelah 2 tahun (24 bulan) untuk menjaga kestabilan aplikasi.</p>
                             </div>
                             <div class="mb-4 mt-6 border-t-2 border-black pt-4">
                                 <h4 class="font-bold mb-2">Akses Login Pemilik</h4>
@@ -463,12 +506,15 @@
         </div>
     </div>
 
-    <!-- Modal Customer Waiting List -->
-    <div id="modalCustWait" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
-        <div class="brutal-box bg-white w-full max-w-md max-h-[95vh] flex flex-col relative overflow-hidden">
-            <button onclick="window.closeModal('modalCustWait')" class="absolute top-2 right-2 bg-danger text-white border-2 border-black w-8 h-8 font-bold text-sm">X</button>
-            <div class="p-4 border-b-4 border-black bg-accent shrink-0"><h2 class="text-xl font-bold uppercase">Pesanan Anda</h2></div>
-            <div class="p-4 overflow-y-auto flex-1 bg-white" id="custWaitListArea"></div>
+    <!-- Modal Global Search -->
+    <div id="modalGlobalSearch" class="fixed inset-0 modal-backdrop d-none z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="brutal-box bg-white w-full max-w-lg max-h-[95vh] flex flex-col relative overflow-hidden">
+            <button onclick="window.closeModal('modalGlobalSearch')" class="absolute top-2 right-2 md:-top-4 md:-right-4 bg-danger text-white border-2 border-black w-10 h-10 font-bold text-xl hover:bg-black transition-colors rounded-full z-30 shadow-brutal-sm">X</button>
+            <div class="p-4 border-b-4 border-black bg-main shrink-0"><h2 class="text-xl font-bold uppercase">Cari Produk</h2></div>
+            <div class="p-4 flex-1 overflow-y-auto bg-gray-100">
+                <input type="text" id="inputGlobalSearch" class="brutal-input bg-white mb-4 w-full" placeholder="Ketik nama produk..." onkeyup="window.doGlobalSearch()">
+                <div id="globalSearchResult" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+            </div>
         </div>
     </div>
 
@@ -484,7 +530,12 @@
                     <label class="block font-bold mb-1 text-sm uppercase">Waktu Transaksi (Opsional)</label>
                     <input type="datetime-local" id="customOrderDate" class="brutal-input py-1 text-sm bg-white">
                 </div>
-                <div id="cartItemsList" class="mb-4 border-b-2 border-black pb-4"></div>
+                <div id="cartItemsList" class="mb-2 border-b-2 border-black pb-2"></div>
+                
+                <div id="cartNoteWrapper" class="mb-4 d-none">
+                    <label class="block font-bold mb-1 text-sm uppercase">Catatan (Opsional)</label>
+                    <textarea id="cartNote" class="brutal-input text-sm bg-white" rows="2" placeholder="Contoh: Pedas, Jangan pakai saos..."></textarea>
+                </div>
                 
                 <div class="flex justify-between items-center font-bold mb-4">
                     <span>Subtotal:</span><span id="cartSubtotal">₩ 0</span>
@@ -551,10 +602,15 @@
                 </div>
             </div>
             
-            <div class="p-4 border-t-4 border-black bg-gray-100 flex flex-col sm:flex-row gap-2 shrink-0">
-                <button onclick="window.processCheckout(false)" class="brutal-btn flex-1 bg-success text-black py-3 text-sm md:text-lg uppercase">Proses Saja</button>
-                <button onclick="window.processCheckout(true)" class="brutal-btn flex-1 bg-accent text-black py-3 text-sm md:text-lg uppercase flex items-center justify-center gap-2">
-                    🖨️ <span class="hidden sm:inline">Proses & Nota</span><span class="sm:hidden">Nota</span>
+            <div class="p-4 border-t-4 border-black bg-gray-100 grid grid-cols-3 gap-2 shrink-0">
+                <button onclick="window.saveToWaitList()" class="brutal-btn bg-white text-black py-2 md:py-3 text-[10px] md:text-sm uppercase flex flex-col items-center justify-center aspect-square gap-1">
+                    <span class="text-xl md:text-2xl leading-none">💾</span> <span class="font-bold">Simpan</span>
+                </button>
+                <button onclick="window.processCheckout(false)" class="brutal-btn bg-success text-black py-2 md:py-3 text-[10px] md:text-sm uppercase flex flex-col items-center justify-center aspect-square gap-1">
+                    <span class="text-xl md:text-2xl leading-none">✅</span> <span class="font-bold">Proses</span>
+                </button>
+                <button onclick="window.processCheckout(true)" class="brutal-btn bg-accent text-black py-2 md:py-3 text-[10px] md:text-sm uppercase flex flex-col items-center justify-center aspect-square gap-1">
+                    <span class="text-xl md:text-2xl leading-none">🖨️</span> <span class="font-bold">Nota</span>
                 </button>
             </div>
         </div>
@@ -707,6 +763,18 @@
         </div>
     </div>
 
+    <!-- Custom Dialog: Override Browser Alerts -->
+    <div id="modalCustomDialog" class="fixed inset-0 modal-backdrop d-none z-[999999] flex items-center justify-center p-4">
+        <div class="brutal-box bg-white w-full max-w-sm relative flex flex-col overflow-hidden">
+            <div id="dialogHeader" class="p-3 border-b-4 border-black font-bold uppercase bg-main">Pesan</div>
+            <div class="p-4 overflow-y-auto bg-gray-50 text-sm md:text-base font-bold whitespace-pre-wrap" id="dialogMessage"></div>
+            <div id="dialogInputWrapper" class="p-4 border-t-2 border-black bg-white d-none">
+                <input type="text" id="dialogInput" class="brutal-input text-sm w-full bg-white">
+            </div>
+            <div class="p-0 flex border-t-4 border-black" id="dialogButtons"></div>
+        </div>
+    </div>
+
 </div>
 
 <script type="module">
@@ -763,7 +831,7 @@
     let STATE = {
         user: null, cart: [], ongkir: 0, editCart: [], custCart: [], waitingList: [],
         activeCategoryPOS: null, activeCategoryPub: null, activeCategoryCust: null,
-        historyFilter: 'all', tempProdImgBase64: '', tempLogoBase64: '', currentReceiptId: null,
+        historyFilter: 'day', tempProdImgBase64: '', tempLogoBase64: '', currentReceiptId: null,
         data: { settings: { posEnabled: false }, categories: [], products: [], customers: [], orders: [] }
     };
 
@@ -781,6 +849,45 @@
     const hideLoad = () => document.getElementById('globalLoader').classList.add('d-none');
     const escapeHTML = str => !str ? '' : String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
     const formatWon = num => '₩ ' + parseInt(num || 0).toLocaleString('ko-KR');
+    
+    window.customAlert = (msg, title="Info") => {
+        return new Promise(resolve => {
+            document.getElementById('dialogHeader').textContent = title;
+            document.getElementById('dialogHeader').className = 'p-3 border-b-4 border-black font-bold uppercase bg-main';
+            document.getElementById('dialogMessage').textContent = msg;
+            document.getElementById('dialogInputWrapper').classList.add('d-none');
+            document.getElementById('dialogButtons').innerHTML = `<button id="btnDialogOk" class="brutal-btn flex-1 bg-white hover:bg-gray-200 py-3 font-bold border-none border-t-0 shadow-none">OK</button>`;
+            window.openModal('modalCustomDialog');
+            document.getElementById('btnDialogOk').onclick = () => { window.closeModal('modalCustomDialog'); resolve(); };
+        });
+    };
+    window.customConfirm = (msg, title="Konfirmasi") => {
+        return new Promise(resolve => {
+            document.getElementById('dialogHeader').textContent = title;
+            document.getElementById('dialogHeader').className = 'p-3 border-b-4 border-black font-bold uppercase bg-danger text-white';
+            document.getElementById('dialogMessage').textContent = msg;
+            document.getElementById('dialogInputWrapper').classList.add('d-none');
+            document.getElementById('dialogButtons').innerHTML = `<button id="btnDialogCancel" class="brutal-btn flex-1 bg-white hover:bg-gray-200 py-3 font-bold border-none border-r-4 border-black shadow-none">Batal</button><button id="btnDialogOk" class="brutal-btn flex-1 bg-main text-black hover:bg-yellow-400 py-3 font-bold border-none shadow-none">Yakin</button>`;
+            window.openModal('modalCustomDialog');
+            document.getElementById('btnDialogCancel').onclick = () => { window.closeModal('modalCustomDialog'); resolve(false); };
+            document.getElementById('btnDialogOk').onclick = () => { window.closeModal('modalCustomDialog'); resolve(true); };
+        });
+    };
+    window.customPrompt = (msg, title="Input", defaultText="") => {
+        return new Promise(resolve => {
+            document.getElementById('dialogHeader').textContent = title;
+            document.getElementById('dialogHeader').className = 'p-3 border-b-4 border-black font-bold uppercase bg-accent';
+            document.getElementById('dialogMessage').textContent = msg;
+            document.getElementById('dialogInputWrapper').classList.remove('d-none');
+            const input = document.getElementById('dialogInput'); input.value = defaultText;
+            document.getElementById('dialogButtons').innerHTML = `<button id="btnDialogCancel" class="brutal-btn flex-1 bg-white hover:bg-gray-200 py-3 font-bold border-none border-r-4 border-black shadow-none">Batal</button><button id="btnDialogOk" class="brutal-btn flex-1 bg-main hover:bg-yellow-400 py-3 font-bold border-none shadow-none">Simpan</button>`;
+            window.openModal('modalCustomDialog');
+            setTimeout(() => input.focus(), 100);
+            document.getElementById('btnDialogCancel').onclick = () => { window.closeModal('modalCustomDialog'); resolve(null); };
+            document.getElementById('btnDialogOk').onclick = () => { window.closeModal('modalCustomDialog'); resolve(input.value); };
+        });
+    };
+    window.alert = window.customAlert; // Override native alert
     const safeDate = dateStr => { if(!dateStr) return '-'; const d = new Date(dateStr); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; };
     
     function compressImage(file, callback) {
@@ -814,7 +921,9 @@
         showLoad();
         try {
             const s = await getDoc(doc(db, 'settings', 'app_config')); STATE.data.settings = s.exists() ? s.data() : {};
-            const c = await getDocs(collection(db, 'categories')); STATE.data.categories = c.docs.map(d => d.id);
+            const c = await getDocs(collection(db, 'categories')); 
+            STATE.data.categories = c.docs.map(d => d.id);
+            if(STATE.data.settings.categoryOrder) { STATE.data.categories.sort((a, b) => { const idxA = STATE.data.settings.categoryOrder.indexOf(a); const idxB = STATE.data.settings.categoryOrder.indexOf(b); return (idxA > -1 ? idxA : 999) - (idxB > -1 ? idxB : 999); }); }
             const p = await getDocs(collection(db, 'products')); STATE.data.products = p.docs.map(d => d.data());
         } catch(e) { console.error(e); } finally { hideLoad(); }
     }
@@ -826,6 +935,17 @@
             await fetchPublicData();
             const cust = await getDocs(collection(db, 'customers')); STATE.data.customers = cust.docs.map(d => d.data());
             const ord = await getDocs(collection(db, 'orders')); STATE.data.orders = ord.docs.map(d => d.data());
+            
+            // Logika Auto-Delete Permanen Data Riwayat Lama
+            const limitMonths = STATE.data.settings.autoReset ? parseInt(STATE.data.settings.resetPeriod || 12) : 24;
+            const cutoffDate = new Date(); cutoffDate.setMonth(cutoffDate.getMonth() - limitMonths);
+            const validOrders = [];
+            for (const o of STATE.data.orders) {
+                if (new Date(o.date) < cutoffDate) { deleteDoc(doc(db, 'orders', o.id)).catch(()=>{}); } 
+                else { validOrders.push(o); }
+            }
+            STATE.data.orders = validOrders;
+            
         } catch(e) { console.error(e); } finally { hideLoad(); }
     }
 
@@ -965,8 +1085,9 @@
     
     window.renderCartModal = () => {
         const list = document.getElementById('cartItemsList');
-        if(STATE.cart.length === 0) list.innerHTML = '<p class="font-bold text-center p-4">Keranjang kosong</p>';
-        else list.innerHTML = STATE.cart.map((item, index) => `<div class="flex justify-between items-center mb-2 bg-gray-50 p-2 border-2 border-black"><div class="flex-1"><h4 class="font-bold text-xs md:text-sm leading-tight">${escapeHTML(item.name)}</h4><div class="text-xs md:text-sm">${formatWon(item.price)}</div></div><div class="flex items-center gap-1 md:gap-2"><button onclick="window.changeQty(${index}, -1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-white border-2 border-black">-</button><span class="w-6 text-center font-bold text-sm md:text-base">${item.qty}</span><button onclick="window.changeQty(${index}, 1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-main border-2 border-black">+</button><button onclick="window.changeQty(${index}, -999)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-danger text-white border-2 border-black ml-1 md:ml-2">X</button></div></div>`).join('');
+        const noteWrap = document.getElementById('cartNoteWrapper');
+        if(STATE.cart.length === 0) { list.innerHTML = '<p class="font-bold text-center p-4">Keranjang kosong</p>'; noteWrap.classList.add('d-none'); }
+        else { list.innerHTML = STATE.cart.map((item, index) => `<div class="flex justify-between items-center mb-2 bg-gray-50 p-2 border-2 border-black"><div class="flex-1"><h4 class="font-bold text-xs md:text-sm leading-tight">${escapeHTML(item.name)}</h4><div class="text-xs md:text-sm">${formatWon(item.price)}</div></div><div class="flex items-center gap-1 md:gap-2"><button onclick="window.changeQty(${index}, -1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-white border-2 border-black">-</button><span class="w-6 text-center font-bold text-sm md:text-base">${item.qty}</span><button onclick="window.changeQty(${index}, 1)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-main border-2 border-black">+</button><button onclick="window.changeQty(${index}, -999)" class="w-6 h-6 md:w-8 md:h-8 font-bold bg-danger text-white border-2 border-black ml-1 md:ml-2">X</button></div></div>`).join(''); noteWrap.classList.remove('d-none'); }
         
         const opts = '<option value="">-- Pilih Nama Pelanggan --</option>' + STATE.data.customers.map(c => `<option value="${c.id}">${escapeHTML(c.name)}</option>`).join('');
         ['selectDeliveryCustomer','selectHutangCustomer'].forEach(id => { const el = document.getElementById(id); const val = el.value; el.innerHTML = opts; el.value = val; });
@@ -991,7 +1112,7 @@
         let custId = null;
         if(orderType === 'Delivery') { custId = document.getElementById('selectDeliveryCustomer').value; if(!custId) return alert('Pilih pelanggan untuk Delivery.'); }
         if(method === 'Hutang') { custId = document.getElementById('selectHutangCustomer').value; if(!custId) return alert('Pilih pelanggan untuk pembayaran hutang.'); } 
-        else if (method === 'Cash') { const bayar = parseInt(document.getElementById('inputBayar').value) || 0; if(bayar < total && !confirm(`Uang kurang ${formatWon(total - bayar)}. Lanjut?`)) return; }
+        else if (method === 'Cash') { const bayar = parseInt(document.getElementById('inputBayar').value) || 0; if(bayar < total && !(await window.customConfirm(`Uang kurang ${formatWon(total - bayar)}. Lanjut?`))) return; }
 
         const orderDate = document.getElementById('customOrderDate').value ? new Date(document.getElementById('customOrderDate').value).toISOString() : new Date().toISOString();
         const payload = { id: 'INV' + new Date().getTime(), date: orderDate, custId, orderType, type: method, paymentStatus: method === 'Hutang' ? 'Unpaid' : 'Paid', items: STATE.cart, subtotal, ongkir: STATE.ongkir, total };
@@ -1006,11 +1127,30 @@
                 STATE.data.orders.push(payload); if(payload.type === 'Hutang' && custId) { const cust = STATE.data.customers.find(c => c.id === custId); if(cust) cust.debt += total; }
             }
             
-            STATE.cart = []; STATE.ongkir = 0; document.getElementById('cartOngkir').value = 0; document.getElementById('inputBayar').value = '';
+            STATE.cart = []; STATE.ongkir = 0; document.getElementById('cartOngkir').value = 0; document.getElementById('inputBayar').value = ''; if(document.getElementById('cartNote')) document.getElementById('cartNote').value = '';
             window.updateCartUI(); window.closeModal('modalCart'); alert('Berhasil!');
             if(isPrint) window.showReceiptPopup(payload.id);
             if (STATE.user && STATE.user.role === 'admin') { window.renderAdminHistory(); window.renderAdminCustomers(); }
         } catch(e) { alert(e.message); } finally { hideLoad(); }
+    };
+
+    window.saveToWaitList = async () => {
+        if(STATE.cart.length === 0) return alert('Keranjang kosong!');
+        const nama = await window.customPrompt("📝 Masukkan Nama Pemesan untuk disimpan di Waiting List:");
+        if(!nama || !nama.trim()) return;
+        
+        const subtotal = STATE.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const total = subtotal + STATE.ongkir;
+        const note = document.getElementById('cartNote') ? document.getElementById('cartNote').value : '';
+        const payload = { id: 'WAIT' + new Date().getTime(), date: new Date().toISOString(), buyerName: nama.trim(), notes: note, items: STATE.cart, total: total, status: 'waiting', userId: null };
+        
+        showLoad();
+        try {
+            if(!IS_PREVIEW) await setDoc(doc(db, 'waiting_list', payload.id), payload);
+            STATE.waitingList.push(payload); 
+            STATE.cart = []; STATE.ongkir = 0; document.getElementById('cartOngkir').value = 0; document.getElementById('inputBayar').value = ''; if(document.getElementById('cartNote')) document.getElementById('cartNote').value = '';
+            window.updateCartUI(); window.closeModal('modalCart'); alert('Tersimpan di Pesanan Masuk (Waiting List)!'); window.checkAdminWaitList();
+        } catch(e) { alert("Gagal simpan: "+e.message); } finally { hideLoad(); }
     };
 
     window.showReceiptPopup = (orderId) => {
@@ -1067,7 +1207,13 @@
     window.handleLogoSelect = e => { const file = e.target.files[0]; if(file) compressImage(file, d => { STATE.tempLogoBase64 = d; document.getElementById('logoPreview').innerHTML = `<img src="${d}" class="h-12 mt-2 border border-black">`; }); };
 
     window.renderAdminProducts = () => {
-        document.getElementById('adminProductsTable').innerHTML = STATE.data.products.map(p => `
+        const query = (document.getElementById('adminProductSearch')?.value || '').toLowerCase();
+        const sortedProducts = [...STATE.data.products].filter(p => p.name.toLowerCase().includes(query)).sort((a, b) => {
+            const catAIndex = STATE.data.categories.indexOf(a.cat); const catBIndex = STATE.data.categories.indexOf(b.cat);
+            if (catAIndex !== catBIndex) return catAIndex - catBIndex;
+            return a.name.localeCompare(b.name);
+        });
+        document.getElementById('adminProductsTable').innerHTML = sortedProducts.map(p => `
             <tr class="border-b-2 border-black hover:bg-gray-100">
                 <td class="p-2 border-r-2 border-black"><img src="${p.img || 'https://via.placeholder.com/40'}" class="w-10 h-10 object-cover border border-black"></td>
                 <td class="p-2 border-r-2 border-black font-bold text-xs md:text-sm">${escapeHTML(p.name)}</td>
@@ -1119,12 +1265,25 @@
     };
 
     window.deleteProduct = async id => {
-        if(!confirm('Hapus produk?')) return; showLoad();
+        if(!(await window.customConfirm('Hapus produk?'))) return; showLoad();
         try { if(!IS_PREVIEW) { await deleteDoc(doc(db, 'products', id)); await fetchAllData(); } else { STATE.data.products = STATE.data.products.filter(p=>p.id!==id); } window.renderAdminProducts(); alert('Dihapus!'); } catch(e) { alert(e.message); } finally { hideLoad(); }
     };
 
-    window.renderAdminCategories = () => { document.getElementById('adminCategoriesList').innerHTML = STATE.data.categories.map((c) => `<div class="brutal-box flex justify-between items-center p-3 bg-gray-50"><span class="font-bold text-sm md:text-lg">${escapeHTML(c)}</span><div class="flex gap-2"><button onclick="window.editCategory('${escapeHTML(c)}')" class="brutal-btn bg-main text-black px-3 py-1 text-xs md:text-sm">Edit</button><button onclick="window.deleteCategory('${escapeHTML(c)}')" class="brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm">Hapus</button></div></div>`).join(''); };
+    window.renderAdminCategories = () => { document.getElementById('adminCategoriesList').innerHTML = STATE.data.categories.map((c, i) => `<div draggable="true" ondragstart="window.dragCatStart(event, ${i})" ondragend="window.dragCatEnd(event)" ondragover="window.dragCatOver(event)" ondrop="window.dropCat(event, ${i})" class="brutal-box flex justify-between items-center p-3 bg-gray-50 cursor-move border-dashed border-2 border-transparent hover:border-black active:bg-yellow-100 transition-all"><div class="flex items-center gap-3"><span class="cursor-move text-gray-400 text-xl pointer-events-none">☰</span><span class="font-bold text-sm md:text-lg pointer-events-none">${escapeHTML(c)}</span></div><div class="flex gap-2"><button onclick="window.editCategory('${escapeHTML(c)}')" class="brutal-btn bg-main text-black px-3 py-1 text-xs md:text-sm">Edit</button><button onclick="window.deleteCategory('${escapeHTML(c)}')" class="brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm">Hapus</button></div></div>`).join(''); };
     
+    window.dragCatStart = (e, idx) => { e.dataTransfer.setData('text/plain', idx); e.target.style.opacity = '0.5'; };
+    window.dragCatEnd = e => { e.target.style.opacity = '1'; };
+    window.dragCatOver = e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; };
+    window.dropCat = async (e, toIdx) => { 
+        e.preventDefault(); e.target.closest('.brutal-box').style.opacity = '1'; 
+        const fromIdx = parseInt(e.dataTransfer.getData('text/plain')); 
+        if (fromIdx === toIdx || isNaN(fromIdx)) return; 
+        const item = STATE.data.categories.splice(fromIdx, 1)[0]; 
+        STATE.data.categories.splice(toIdx, 0, item); 
+        window.renderAdminCategories(); window.renderAdminProducts(); 
+        if(!IS_PREVIEW) { showLoad(); try { await updateDoc(doc(db, 'settings', 'app_config'), { categoryOrder: STATE.data.categories }); } catch(err) { alert(err.message); } finally { hideLoad(); } }
+    };
+
     window.openAddCategory = () => {
         document.getElementById('modalCategoryTitle').textContent = 'Kategori Baru';
         document.getElementById('oldCatName').value = '';
@@ -1172,10 +1331,11 @@
         }
     };
 
-    window.deleteCategory = async name => { if(STATE.data.products.some(p => p.cat === name)) return alert('Ada produk di kategori ini.'); if(confirm('Hapus kategori?')) { showLoad(); try { if(!IS_PREVIEW) { await deleteDoc(doc(db, 'categories', name)); await fetchAllData(); } else { STATE.data.categories = STATE.data.categories.filter(c=>c!==name); } window.renderAdminCategories(); } catch(e){ alert(e.message); } finally { hideLoad(); } } };
+    window.deleteCategory = async name => { if(STATE.data.products.some(p => p.cat === name)) return alert('Ada produk di kategori ini.'); if(await window.customConfirm('Hapus kategori?')) { showLoad(); try { if(!IS_PREVIEW) { await deleteDoc(doc(db, 'categories', name)); await fetchAllData(); } else { STATE.data.categories = STATE.data.categories.filter(c=>c!==name); } window.renderAdminCategories(); } catch(e){ alert(e.message); } finally { hideLoad(); } } };
 
     window.renderAdminCustomers = () => {
-        document.getElementById('adminCustomersTable').innerHTML = STATE.data.customers.map(c => `
+        const sortedCust = [...STATE.data.customers].sort((a,b) => (a.name||'').localeCompare(b.name||''));
+        document.getElementById('adminCustomersTable').innerHTML = sortedCust.map(c => `
             <tr class="border-b-2 border-black hover:bg-gray-100">
                 <td class="p-2 border-r-2 border-black w-1/4">
                     <div class="font-bold text-sm">${escapeHTML(c.name)}</div>
@@ -1200,7 +1360,7 @@
     
     window.payDebt = async id => {
         const cust = STATE.data.customers.find(c => c.id === id); if(!cust || cust.debt <= 0) return alert('Tidak ada hutang.');
-        if(confirm(`Lunasi seluruh hutang ${cust.name}?`)) {
+        if(await window.customConfirm(`Lunasi seluruh hutang ${cust.name}?`)) {
             showLoad();
             try { 
                 if(!IS_PREVIEW) { 
@@ -1219,7 +1379,7 @@
     window.deleteCustomer = async (id) => {
         const cust = STATE.data.customers.find(c => c.id === id);
         if(!cust) return;
-        if(confirm(`Yakin ingin menghapus pelanggan ${cust.name}? Akun ini akan dihapus secara permanen dan pelanggan tidak akan bisa login kembali.`)) {
+        if(await window.customConfirm(`Yakin ingin menghapus pelanggan ${cust.name}? Akun ini akan dihapus secara permanen dan pelanggan tidak akan bisa login kembali.`)) {
             showLoad();
             try {
                 if(!IS_PREVIEW) {
@@ -1243,14 +1403,42 @@
         try { const q = query(collection(db, 'orders'), where('custId', '==', custId), where('type', '==', 'Hutang'), where('paymentStatus', '==', 'Unpaid')); const snap = await getDocs(q); let totalDebt = 0; snap.forEach(doc => { totalDebt += doc.data().total; }); await updateDoc(doc(db, 'customers', custId), { debt: totalDebt }); } catch (e) { console.error(e); }
     };
 
-    window.filterAdminHistory = period => { STATE.historyFilter = period; document.querySelectorAll('.hist-filter').forEach(btn => btn.classList.remove('bg-black', 'text-white') || btn.classList.add('bg-white', 'text-black')); document.getElementById(`flt_${period}`).classList.remove('bg-white', 'text-black'); document.getElementById(`flt_${period}`).classList.add('bg-black', 'text-white'); window.renderAdminHistory(); };
+    window.filterAdminHistory = period => { 
+        if(!period) return;
+        STATE.historyFilter = period; 
+        document.querySelectorAll('.hist-filter').forEach(btn => btn.classList.remove('bg-black', 'text-white') || btn.classList.add('bg-white', 'text-black')); 
+        const activeEl = document.getElementById(`flt_${period}`);
+        if(activeEl) {
+            activeEl.classList.remove('bg-white', 'text-black'); activeEl.classList.add('bg-black', 'text-white');
+            document.getElementById('flt_dropdown').value = '';
+        } else {
+            document.getElementById('flt_dropdown').classList.remove('bg-white', 'text-black'); document.getElementById('flt_dropdown').classList.add('bg-black', 'text-white');
+        }
+        window.renderAdminHistory(); 
+    };
+    
     window.renderAdminHistory = () => {
+        const limit = STATE.data.settings.autoReset ? parseInt(STATE.data.settings.resetPeriod || 12) : 24;
+        const d3 = document.getElementById('opt_3month'), d6 = document.getElementById('opt_6month'), d12 = document.getElementById('opt_1year');
+        if(d3) d3.style.display = limit <= 3 ? 'none' : 'block';
+        if(d6) d6.style.display = limit <= 6 ? 'none' : 'block';
+        if(d12) d12.style.display = limit <= 12 ? 'none' : 'block';
+        
+        if ((STATE.historyFilter === '3month' && limit <= 3) || (STATE.historyFilter === '6month' && limit <= 6) || (STATE.historyFilter === '1year' && limit <= 12)) {
+            STATE.historyFilter = 'day'; document.getElementById('flt_dropdown').value = '';
+            document.querySelectorAll('.hist-filter').forEach(btn => btn.classList.remove('bg-black', 'text-white') || btn.classList.add('bg-white', 'text-black'));
+            document.getElementById('flt_day').classList.remove('bg-white', 'text-black'); document.getElementById('flt_day').classList.add('bg-black', 'text-white');
+        }
+
         const now = new Date();
         let filtered = STATE.data.orders.filter(o => {
             const oDate = new Date(o.date);
             if (STATE.historyFilter === 'day') return oDate.toDateString() === now.toDateString();
             if (STATE.historyFilter === 'week') return Math.ceil(Math.abs(now - oDate) / (1000 * 60 * 60 * 24)) <= 7;
             if (STATE.historyFilter === 'month') return oDate.getMonth() === now.getMonth() && oDate.getFullYear() === now.getFullYear();
+            if (STATE.historyFilter === '3month') { const d = new Date(); d.setMonth(now.getMonth() - 3); return oDate >= d; }
+            if (STATE.historyFilter === '6month') { const d = new Date(); d.setMonth(now.getMonth() - 6); return oDate >= d; }
+            if (STATE.historyFilter === '1year') { const d = new Date(); d.setFullYear(now.getFullYear() - 1); return oDate >= d; }
             return true; 
         }).sort((a,b) => new Date(b.date) - new Date(a.date));
 
@@ -1300,7 +1488,7 @@
     };
     
     window.deleteTransaction = async id => {
-        if(!confirm('Hapus transaksi?')) return; showLoad();
+        if(!(await window.customConfirm('Hapus transaksi?'))) return; showLoad();
         try { 
             const o = STATE.data.orders.find(x=>x.id===id);
             if(!IS_PREVIEW){ await deleteDoc(doc(db,'orders',id)); if(o.custId) await window.syncCustomerDebt(o.custId); await fetchAllData(); } 
@@ -1314,12 +1502,19 @@
         document.getElementById('setBankAcc').value = STATE.data.settings.bankAcc || ''; document.getElementById('setOwnerName').value = STATE.data.settings.ownerName || '';
         document.getElementById('setOwnerPass').value = STATE.data.settings.ownerPass || '';
         document.getElementById('setPosEnabled').checked = STATE.data.settings.posEnabled || false;
+        
+        document.getElementById('setAutoReset').checked = STATE.data.settings.autoReset || false;
+        document.getElementById('setResetPeriod').value = STATE.data.settings.resetPeriod || '12';
+        window.toggleAutoResetConfig();
+
         STATE.tempLogoBase64 = STATE.data.settings.logoUrl || ''; document.getElementById('logoPreview').innerHTML = STATE.tempLogoBase64 ? `<img src="${STATE.tempLogoBase64}" class="h-12 mt-2 border border-black">` : '';
     };
 
+    window.toggleAutoResetConfig = () => { document.getElementById('autoResetConfigWrapper').classList.toggle('d-none', !document.getElementById('setAutoReset').checked); };
+
     window.saveSettings = async e => {
         e.preventDefault(); showLoad();
-        const payload = { storeName: document.getElementById('setStoreName').value, bankName: document.getElementById('setBankName').value, bankAcc: document.getElementById('setBankAcc').value, ownerName: document.getElementById('setOwnerName').value, logoUrl: STATE.tempLogoBase64, ownerPass: document.getElementById('setOwnerPass').value, posEnabled: document.getElementById('setPosEnabled').checked };
+        const payload = { storeName: document.getElementById('setStoreName').value, bankName: document.getElementById('setBankName').value, bankAcc: document.getElementById('setBankAcc').value, ownerName: document.getElementById('setOwnerName').value, logoUrl: STATE.tempLogoBase64, ownerPass: document.getElementById('setOwnerPass').value, posEnabled: document.getElementById('setPosEnabled').checked, autoReset: document.getElementById('setAutoReset').checked, resetPeriod: document.getElementById('setResetPeriod').value };
         try { if(!IS_PREVIEW) { await updateDoc(doc(db, 'settings', 'app_config'), payload); await fetchPublicData(); } else { STATE.data.settings = {...STATE.data.settings, ...payload}; } updateHeader(); alert('Pengaturan tersimpan!'); } catch(e) { alert(e.message); } finally { hideLoad(); }
     };
 
@@ -1361,7 +1556,7 @@
     window.submitCustOrder = async () => {
         if(STATE.custCart.length === 0) return alert('Keranjang kosong!');
         const nama = document.getElementById('custOrderName').value.trim(); if(!nama) return alert('Nama wajib diisi!');
-        if(!confirm('Apakah pesanan sudah benar? Pesan dan Tunggu sekarang?')) return;
+        if(!(await window.customConfirm('Apakah pesanan sudah benar? Pesan dan Tunggu sekarang?'))) return;
         
         const payload = { id: 'WAIT' + new Date().getTime(), date: new Date().toISOString(), buyerName: nama, notes: document.getElementById('custOrderNotes').value, items: STATE.custCart, total: STATE.custCart.reduce((s, i) => s + (i.price * i.qty), 0), status: 'waiting', userId: STATE.user ? STATE.user.id : null };
         
@@ -1380,29 +1575,53 @@
         } catch(e) { alert("Gagal pesan: "+e.message); } finally { hideLoad(); }
     };
 
-    window.openCustWaitList = () => {
-        let list = [];
-        if(STATE.user) {
-            list = STATE.waitingList.filter(x => x.userId === STATE.user.id);
-        } else {
-            let guestWaits = JSON.parse(localStorage.getItem('ww_guest_waits') || '[]');
-            list = STATE.waitingList.filter(x => guestWaits.includes(x.id));
-        }
-        
-        document.getElementById('custWaitListArea').innerHTML = list.length ? list.map(w => `<div class="brutal-box p-3 mb-3 border-l-8 ${w.status === 'cooking' ? 'border-l-success' : 'border-l-main'}"><div class="font-bold border-b-2 border-black pb-1 mb-2 flex justify-between"><span>${safeDate(w.date)}</span><span>${escapeHTML(w.buyerName)}</span></div>${w.items.map(i=>`<div class="text-sm">- ${i.qty}x ${escapeHTML(i.name)}</div>`).join('')}<div class="mt-2 font-bold bg-yellow-200 p-1">Total: ${formatWon(w.total)}</div><div class="mt-1 text-xs font-bold p-1 border-2 border-black text-center ${w.status === 'cooking' ? 'bg-success text-black' : 'bg-gray-200'}">Status: ${w.status === 'cooking' ? '✔ DITERIMA (Sedang Dimasak)' : '⏳ Menunggu Kasir'}</div></div>`).join('') : '<p class="font-bold text-center">Tidak ada pesanan (Sedang Dipesan).</p>';
-        window.openModal('modalCustWait');
+   window.openCustWaitList = () => {
+        const list = STATE.waitingList.filter(x => x.userId === (STATE.user ? STATE.user.id : null));
+        document.getElementById('custWaitListAreaPage').innerHTML = list.length ? list.map(w => `<div class="brutal-box p-4 bg-white border-l-8 ${w.status === 'cooking' ? 'border-l-success' : 'border-l-main'}"><div class="font-bold border-b-2 border-black pb-2 mb-2 flex justify-between text-lg"><span>${safeDate(w.date)}</span><span>${escapeHTML(w.buyerName)}</span></div><div class="flex-1">${w.items.map(i=>`<div class="text-sm font-bold">- ${i.qty}x ${escapeHTML(i.name)}</div>`).join('')}</div><div class="mt-4 font-bold bg-yellow-200 p-2 text-lg border-2 border-black">Total: ${formatWon(w.total)}</div><div class="mt-2 text-sm font-bold p-2 border-2 border-black text-center ${w.status === 'cooking' ? 'bg-success text-black' : 'bg-gray-200 text-gray-700'}">Status: ${w.status === 'cooking' ? '✔ DITERIMA (Sedang Dimasak)' : '⏳ Menunggu Kasir'}</div></div>`).join('') : '<p class="font-bold text-center col-span-full">Pesanan sudah diproses kasir atau kosong.</p>';
+        window.showPage('pageCustWaitList');
     };
 
-    // --- LOGIKA ADMIN WAITING LIST ---
+    // --- LOGIKA ADMIN WAITING LIST & GLOBAL SEARCH ---
     const timeAgo = (dateStr) => { const diff = Math.floor((new Date() - new Date(dateStr)) / 60000); return diff < 1 ? 'Baru saja' : diff + ' menit lalu'; };
     
     window.checkAdminWaitList = async () => {
         if(!IS_PREVIEW) { try { const snap = await getDocs(collection(db, 'waiting_list')); STATE.waitingList = snap.docs.map(d=>d.data()); } catch(e){} }
         if(STATE.user && STATE.user.role === 'admin') {
             const btn = document.getElementById('btnAdminWaiting'); const c = STATE.waitingList.length;
-            if(btn) { btn.classList.toggle('d-none', c === 0); document.getElementById('adminWaitCount').textContent = c; }
-            if(!document.getElementById('pageAdminWaitList').classList.contains('d-none')) window.openAdminWaitingList();
+            const uncooked = STATE.waitingList.filter(w => w.status !== 'cooking').length;
+            if(btn) { btn.classList.toggle('d-none', c === 0); document.getElementById('adminWaitCount').textContent = c; document.getElementById('adminUncookedCount').textContent = uncooked; }
         }
+        
+        // Auto-refresh jika halaman 'Pesanan Anda' sedang terbuka (untuk auto-hilang saat dipindah ke keranjang)
+        if(!document.getElementById('pageCustWaitList').classList.contains('d-none')) {
+            window.openCustWaitList();
+        }
+    };
+
+    window.searchModeGlobal = 'public';
+    window.openGlobalSearch = (mode) => {
+        window.searchModeGlobal = mode;
+        document.getElementById('inputGlobalSearch').value = '';
+        document.getElementById('globalSearchResult').innerHTML = '';
+        window.openModal('modalGlobalSearch');
+        setTimeout(() => document.getElementById('inputGlobalSearch').focus(), 100);
+    };
+    
+    window.doGlobalSearch = () => {
+        const query = document.getElementById('inputGlobalSearch').value.toLowerCase();
+        const resContainer = document.getElementById('globalSearchResult');
+        if(!query) { resContainer.innerHTML = ''; return; }
+        
+        const filtered = STATE.data.products.filter(p => p.available && p.name.toLowerCase().includes(query));
+        if(filtered.length === 0) { resContainer.innerHTML = '<p class="col-span-full font-bold text-center mt-4">Produk tidak ditemukan.</p>'; return; }
+        
+        resContainer.innerHTML = filtered.map(p => {
+            let actionAttr = '';
+            if(window.searchModeGlobal === 'pos') actionAttr = `onclick="window.addToCart('${p.id}'); window.closeModal('modalGlobalSearch');"`;
+            else if(window.searchModeGlobal === 'customer' || STATE.data.settings.posEnabled) actionAttr = `onclick="window.addCustCart('${p.id}'); window.closeModal('modalGlobalSearch');"`;
+            
+            return `<div ${actionAttr} class="brutal-box flex flex-col cursor-pointer hover:bg-yellow-100 p-2"><img src="${p.img || 'https://via.placeholder.com/40'}" class="w-full h-16 object-cover border-b-2 border-black mb-1 pointer-events-none"><div class="font-bold text-[10px] md:text-xs leading-tight mb-1 truncate pointer-events-none">${escapeHTML(p.name)}</div><div class="font-bold text-xs bg-black text-white px-1 py-0.5 inline-block self-start pointer-events-none">${formatWon(p.price)}</div></div>`;
+        }).join('');
     };
     setInterval(window.checkAdminWaitList, 15000);
 
@@ -1422,7 +1641,7 @@
     };
 
     window.pullToCart = async (waitId) => {
-        if(!confirm('Tarik pesanan ini ke keranjang kasir?')) return;
+        if(!(await window.customConfirm('Tarik pesanan ini ke keranjang kasir?'))) return;
         const w = STATE.waitingList.find(x => x.id === waitId); if(!w) return;
         STATE.cart = [...w.items]; window.updateCartUI();
         
