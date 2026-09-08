@@ -251,7 +251,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
                     <div class="flex items-center gap-2">
                         <h2 class="text-2xl md:text-3xl font-bold uppercase bg-main px-2 border-2 border-black border-l-8 border-l-dark">KASIR</h2>
-                        <button onclick="window.openAdminWaitingList()" id="btnAdminWaiting" class="d-none brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm flex items-center gap-1 animate-pulse">📝 Waiting List (<span id="adminWaitCount">0</span>) | 🔥 Belum Masak: <span id="adminUncookedCount">0</span></button>
+                        <button onclick="window.openAdminWaitingList()" id="btnAdminWaiting" class="d-none brutal-btn bg-danger text-white px-3 py-1 text-xs md:text-sm flex items-center gap-1 animate-pulse">📝 Waiting List (<span id="adminWaitCount">0</span>)<sup class="text-yellow-300 font-bold ml-1 text-xs">★<span id="adminUncookedCount">0</span></sup></button>
                     </div>
                     <div class="flex gap-2 w-full sm:w-auto">
                         <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent flex-1 sm:flex-none px-4 py-3 md:py-2 text-sm text-black">+ Produk</button>
@@ -1012,6 +1012,7 @@
     
     function route() {
         updateNavMenu();
+        window.checkAdminWaitList();
         if(!STATE.user) { window.renderPublicCatalog(); window.showPage('pagePublic'); }
         else if (STATE.user.role === 'admin') { window.renderAdminPOS(); window.showPage('pageAdminPOS'); }
         else if (STATE.user.role === 'customer') { initCustomerDashboard(); window.showPage('pageCustomerDashboard'); }
@@ -1033,7 +1034,7 @@
 
     function updateNavMenu() {
         const nav = document.getElementById('navMenu'); const iconClasses = "brutal-btn bg-white px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm whitespace-nowrap";
-        const posMenu = STATE.data.settings.posEnabled ? `<button onclick="window.openCustWaitList()" class="${iconClasses} !bg-accent hidden sm:inline-block">Sedang Dipesan</button><button onclick="window.openCustCartModal()" class="${iconClasses} !bg-black !text-white relative">🛒 <span id="custCartCount" class="absolute -top-2 -right-2 bg-danger text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">0</span></button>` : '';
+        const posMenu = STATE.data.settings.posEnabled ? `<button onclick="window.openCustWaitList()" id="navBtnCustWait" class="${iconClasses} !bg-accent d-none">📝 Pesanan Anda</button><button onclick="window.openCustCartModal()" class="${iconClasses} !bg-black !text-white relative">🛒 <span id="custCartCount" class="absolute -top-2 -right-2 bg-danger text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">0</span></button>` : '';
         if(!STATE.user) { nav.innerHTML = `${posMenu}<button onclick="window.showPage('pageLogin')" class="${iconClasses} !bg-main">Masuk</button>`; }
         else if (STATE.user.role === 'admin') { nav.innerHTML = `<button onclick="window.showPage('pageAdminPOS')" class="${iconClasses} !bg-main hidden sm:block">POS Kasir</button><button onclick="window.showPage('pageAdminMgmt'); window.renderAdminProducts();" class="${iconClasses}">Kelola Admin</button><button onclick="window.logout()" class="${iconClasses} !bg-danger !text-white">Keluar</button>`; }
         else { nav.innerHTML = `<span class="font-bold text-xs md:text-sm mr-2 hidden sm:inline-block">Hi, ${escapeHTML(STATE.user.name)}</span>${posMenu}<button onclick="window.logout()" class="${iconClasses} !bg-danger !text-white">Keluar</button>`; }
@@ -1590,9 +1591,20 @@
             const btn = document.getElementById('btnAdminWaiting'); const c = STATE.waitingList.length;
             const uncooked = STATE.waitingList.filter(w => w.status !== 'cooking').length;
             if(btn) { btn.classList.toggle('d-none', c === 0); document.getElementById('adminWaitCount').textContent = c; document.getElementById('adminUncookedCount').textContent = uncooked; }
+        } else {
+            const btnWait = document.getElementById('navBtnCustWait');
+            let myWaits = 0;
+            if(STATE.user) { myWaits = STATE.waitingList.filter(x => x.userId === STATE.user.id).length; }
+            else { let gw = JSON.parse(localStorage.getItem('ww_guest_waits') || '[]'); myWaits = STATE.waitingList.filter(x => gw.includes(x.id)).length; }
+            if(btnWait) btnWait.classList.toggle('d-none', myWaits === 0);
+            
+            // Jika halaman 'Pesanan Anda' terbuka tapi pesanan sudah ditarik admin
+            if(myWaits === 0 && !document.getElementById('pageCustWaitList').classList.contains('d-none')) {
+                window.goHome(); // Tendang kembali ke Home
+            }
         }
         
-        // Auto-refresh jika halaman 'Pesanan Anda' sedang terbuka (untuk auto-hilang saat dipindah ke keranjang)
+        // Auto-refresh jika halaman 'Pesanan Anda' sedang terbuka
         if(!document.getElementById('pageCustWaitList').classList.contains('d-none')) {
             window.openCustWaitList();
         }
