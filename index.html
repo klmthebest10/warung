@@ -100,7 +100,8 @@
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                     <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="publicCategoryFilter"></div>
-                    <button onclick="window.openGlobalSearch('public')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                    <input type="text" id="publicInlineSearch" autocomplete="off" onkeyup="window.doPublicInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
+                    <button onclick="window.togglePublicSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="publicProductGrid"></div>
             </section>
@@ -199,7 +200,8 @@
                 <div id="custCatalogArea">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="custCategoryFilter"></div>
-                        <button onclick="window.openGlobalSearch('customer')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                        <input type="text" id="custInlineSearch" autocomplete="off" onkeyup="window.doCustInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
+                        <button onclick="window.toggleCustSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="custProductGrid"></div>
                 </div>
@@ -262,7 +264,8 @@
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                     <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="adminPosCategoryFilter"></div>
-                    <button onclick="window.openGlobalSearch('pos')" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
+                    <input type="text" id="posInlineSearch" autocomplete="off" onkeyup="window.doPosInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
+                    <button onclick="window.togglePosSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4" id="adminPosProductGrid"></div>
             </section>
@@ -299,7 +302,7 @@
                         <div class="flex gap-2 w-full sm:w-auto">
                             <div class="relative flex-1 sm:w-48">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-lg">🔍</span>
-                                <input type="text" id="adminProductSearch" onkeyup="window.renderAdminProducts()" placeholder="Cari produk..." class="brutal-input bg-white py-2 pl-8 pr-2 text-sm w-full h-full">
+                                <input type="text" id="adminProductSearch" autocomplete="off" onkeyup="window.renderAdminProducts()" placeholder="Cari produk..." class="brutal-input bg-white py-2 pl-8 pr-2 text-sm w-full h-full">
                             </div>
                             <button onclick="window.openModal('modalAddProduct')" class="brutal-btn bg-accent px-4 py-2 text-sm whitespace-nowrap">+ Tambah</button>
                         </div>
@@ -341,10 +344,10 @@
                             <thead>
                                 <tr class="border-b-4 border-black bg-danger text-white">
                                     <th class="p-2 border-r-2 border-black w-1/4">Nama & Akses</th>
-                                    <th class="p-2 border-r-2 border-black w-1/5">Kontak</th>
-                                    <th class="p-2 border-r-2 border-black w-1/3">Alamat</th>
                                     <th class="p-2 border-r-2 border-black">Total Hutang</th>
-                                    <th class="p-2 text-center w-24">Aksi</th>
+                                    <th class="p-2 border-r-2 border-black text-center w-24">Aksi</th>
+                                    <th class="p-2 border-r-2 border-black w-1/5">Kontak</th>
+                                    <th class="p-2 w-1/3">Alamat</th>
                                 </tr>
                             </thead>
                             <tbody id="adminCustomersTable"></tbody>
@@ -494,7 +497,7 @@
                 <div id="editWaitItems" class="mb-4 space-y-2 border-b-2 border-black pb-2"></div>
                 <div class="mb-2 relative border-t-2 border-black pt-4">
                     <label class="block font-bold mb-1 text-sm">Tambah Produk (Cari 🔍)</label>
-                    <input type="text" id="searchWaitProduct" class="brutal-input bg-gray-100 text-sm mb-2" placeholder="Ketik nama produk..." onkeyup="window.filterSearchWaitProduct()">
+                    <input type="text" id="searchWaitProduct" autocomplete="off" class="brutal-input bg-gray-100 text-sm mb-2" placeholder="Ketik nama produk..." onkeyup="window.filterSearchWaitProduct()">
                     <select id="selectWaitProduct" class="brutal-input bg-white text-sm w-full mb-2"></select>
                 </div>
                 <button onclick="window.addWaitItem()" class="brutal-btn bg-main px-4 py-2 text-sm w-full font-bold mb-4">+ Tambahkan Produk</button>
@@ -512,7 +515,7 @@
             <button onclick="window.closeModal('modalGlobalSearch')" class="absolute top-2 right-2 md:-top-4 md:-right-4 bg-danger text-white border-2 border-black w-10 h-10 font-bold text-xl hover:bg-black transition-colors rounded-full z-30 shadow-brutal-sm">X</button>
             <div class="p-4 border-b-4 border-black bg-main shrink-0"><h2 class="text-xl font-bold uppercase">Cari Produk</h2></div>
             <div class="p-4 flex-1 overflow-y-auto bg-gray-100">
-                <input type="text" id="inputGlobalSearch" class="brutal-input bg-white mb-4 w-full" placeholder="Ketik nama produk..." onkeyup="window.doGlobalSearch()">
+                <input type="text" id="inputGlobalSearch" autocomplete="off" class="brutal-input bg-white mb-4 w-full" placeholder="Ketik nama produk..." onkeyup="window.doGlobalSearch()">
                 <div id="globalSearchResult" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
             </div>
         </div>
@@ -1340,16 +1343,16 @@
             <tr class="border-b-2 border-black hover:bg-gray-100">
                 <td class="p-2 border-r-2 border-black w-1/4">
                     <div class="font-bold text-sm">${escapeHTML(c.name)}</div>
-                    <div class="flex items-center gap-1 mt-1 text-[10px] text-gray-600"><span>Pass:</span><input type="password" id="adminCustPass_${c.id}" value="${escapeHTML(c.pass)}" class="bg-transparent border-none outline-none w-12 md:w-16 pointer-events-none" readonly><button type="button" onclick="window.toggleAdminCustPass('${c.id}')" class="cursor-pointer text-gray-800"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+                    <div class="flex items-center gap-1 mt-1 text-[10px] text-gray-600"><span>Pass:</span><input type="password" id="adminCustPass_${c.id}" value="${escapeHTML(c.pass)}" class="bg-transparent border-none outline-none w-12 md:w-16 pointer-events-none" readonly autocomplete="off"><button type="button" onclick="window.toggleAdminCustPass('${c.id}')" class="cursor-pointer text-gray-800"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></button></div>
                 </td>
-                <td class="p-2 border-r-2 border-black text-xs md:text-sm w-1/5">${escapeHTML(c.wa)}</td>
-                <td class="p-2 border-r-2 border-black text-[10px] md:text-xs w-1/3 cursor-pointer hover:bg-yellow-200" onclick="window.showAddressModal('${c.id}')"><div class="max-w-[100px] truncate">${escapeHTML(c.address)}</div></td>
                 <td class="p-2 border-r-2 border-black font-bold text-sm ${c.debt > 0 ? 'text-danger' : 'text-success'}">${formatWon(c.debt)}</td>
-                <td class="p-2 text-center flex flex-col gap-1 items-center">
+                <td class="p-2 border-r-2 border-black text-center flex flex-col gap-1 items-center">
                     <button onclick="window.viewDebtReceipt('${c.id}')" class="brutal-btn bg-main px-2 py-1 text-[10px] w-full">Nota Hutang</button>
                     <button onclick="window.payDebt('${c.id}')" class="brutal-btn bg-success px-2 py-1 text-[10px] w-full">Lunas</button>
                     <button onclick="window.deleteCustomer('${c.id}')" class="brutal-btn bg-danger text-white px-2 py-1 text-[10px] w-full mt-1">Hapus</button>
                 </td>
+                <td class="p-2 border-r-2 border-black text-xs md:text-sm w-1/5">${escapeHTML(c.wa)}</td>
+                <td class="p-2 text-[10px] md:text-xs w-1/3 cursor-pointer hover:bg-yellow-200" onclick="window.showAddressModal('${c.id}')"><div class="max-w-[100px] truncate">${escapeHTML(c.address)}</div></td>
             </tr>`).join('');
     };
 
@@ -1634,6 +1637,57 @@
             
             return `<div ${actionAttr} class="brutal-box flex flex-col cursor-pointer hover:bg-yellow-100 p-2"><img src="${p.img || 'https://via.placeholder.com/40'}" class="w-full h-16 object-cover border-b-2 border-black mb-1 pointer-events-none"><div class="font-bold text-[10px] md:text-xs leading-tight mb-1 truncate pointer-events-none">${escapeHTML(p.name)}</div><div class="font-bold text-xs bg-black text-white px-1 py-0.5 inline-block self-start pointer-events-none">${formatWon(p.price)}</div></div>`;
         }).join('');
+    };
+
+    window.togglePosSearch = () => {
+        const cat = document.getElementById('adminPosCategoryFilter');
+        const inp = document.getElementById('posInlineSearch');
+        if(inp.classList.contains('d-none')) {
+            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+        } else {
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderAdminPOS();
+        }
+    };
+
+    window.doPosInlineSearch = () => {
+        const q = document.getElementById('posInlineSearch').value.toLowerCase();
+        if(!q) return window.renderAdminPOS();
+        const filtered = [...STATE.data.products].filter(p => p.available && p.name.toLowerCase().includes(q)).sort((a,b) => a.name.localeCompare(b.name));
+        document.getElementById('adminPosProductGrid').innerHTML = filtered.map(p => buildProductCard(p, 'pos')).join('') || '<p class="col-span-full font-bold text-center mt-4">Produk tidak ditemukan.</p>';
+    };
+
+    window.togglePublicSearch = () => {
+        const cat = document.getElementById('publicCategoryFilter');
+        const inp = document.getElementById('publicInlineSearch');
+        if(inp.classList.contains('d-none')) {
+            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+        } else {
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderPublicCatalog();
+        }
+    };
+
+    window.doPublicInlineSearch = () => {
+        const q = document.getElementById('publicInlineSearch').value.toLowerCase();
+        if(!q) return window.renderPublicCatalog();
+        const filtered = [...STATE.data.products].filter(p => p.available && p.name.toLowerCase().includes(q)).sort((a,b) => a.name.localeCompare(b.name));
+        document.getElementById('publicProductGrid').innerHTML = filtered.map(p => buildProductCard(p, 'public')).join('') || '<p class="col-span-full font-bold text-center mt-4">Produk tidak ditemukan.</p>';
+    };
+
+    window.toggleCustSearch = () => {
+        const cat = document.getElementById('custCategoryFilter');
+        const inp = document.getElementById('custInlineSearch');
+        if(inp.classList.contains('d-none')) {
+            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+        } else {
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderCustomerCatalog();
+        }
+    };
+
+    window.doCustInlineSearch = () => {
+        const q = document.getElementById('custInlineSearch').value.toLowerCase();
+        if(!q) return window.renderCustomerCatalog();
+        const filtered = [...STATE.data.products].filter(p => p.available && p.name.toLowerCase().includes(q)).sort((a,b) => a.name.localeCompare(b.name));
+        document.getElementById('custProductGrid').innerHTML = filtered.map(p => buildProductCard(p, 'customer')).join('') || '<p class="col-span-full font-bold text-center mt-4">Produk tidak ditemukan.</p>';
     };
     setInterval(window.checkAdminWaitList, 15000);
 
