@@ -98,7 +98,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl md:text-3xl font-bold uppercase border-l-8 border-main pl-3">Menu Tersedia</h2>
                 </div>
-                <div class="flex items-center gap-2 mb-4">
+                <div class="flex items-center gap-2 mb-4 transition-all" id="publicSearchWrap">
                     <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="publicCategoryFilter"></div>
                     <input type="text" id="publicInlineSearch" autocomplete="off" onkeyup="window.doPublicInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
                     <button onclick="window.togglePublicSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
@@ -198,7 +198,7 @@
                 </div>
                 
                 <div id="custCatalogArea">
-                    <div class="flex items-center gap-2 mb-4">
+                    <div class="flex items-center gap-2 mb-4 transition-all" id="custSearchWrap">
                         <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="custCategoryFilter"></div>
                         <input type="text" id="custInlineSearch" autocomplete="off" onkeyup="window.doCustInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
                         <button onclick="window.toggleCustSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
@@ -262,7 +262,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 mb-4">
+                <div class="flex items-center gap-2 mb-4 transition-all" id="posSearchWrap">
                     <div class="flex-1 flex overflow-x-auto gap-3 py-2 no-scrollbar" id="adminPosCategoryFilter"></div>
                     <input type="text" id="posInlineSearch" autocomplete="off" onkeyup="window.doPosInlineSearch()" placeholder="Cari produk..." class="d-none brutal-input flex-1 bg-white py-2 text-sm">
                     <button onclick="window.togglePosSearch()" class="brutal-btn bg-white w-10 h-10 flex-shrink-0 flex items-center justify-center text-lg shadow-sm border-2 border-black">🔍</button>
@@ -1640,12 +1640,17 @@
     };
 
     window.togglePosSearch = () => {
+        const wrap = document.getElementById('posSearchWrap');
         const cat = document.getElementById('adminPosCategoryFilter');
         const inp = document.getElementById('posInlineSearch');
         if(inp.classList.contains('d-none')) {
-            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+            cat.classList.add('d-none'); inp.classList.remove('d-none');
+            wrap.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.remove('mb-4');
+            inp.focus();
         } else {
-            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderAdminPOS();
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = '';
+            wrap.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.add('mb-4');
+            window.renderAdminPOS();
         }
     };
 
@@ -1657,12 +1662,17 @@
     };
 
     window.togglePublicSearch = () => {
+        const wrap = document.getElementById('publicSearchWrap');
         const cat = document.getElementById('publicCategoryFilter');
         const inp = document.getElementById('publicInlineSearch');
         if(inp.classList.contains('d-none')) {
-            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+            cat.classList.add('d-none'); inp.classList.remove('d-none');
+            wrap.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.remove('mb-4');
+            inp.focus();
         } else {
-            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderPublicCatalog();
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = '';
+            wrap.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.add('mb-4');
+            window.renderPublicCatalog();
         }
     };
 
@@ -1674,12 +1684,17 @@
     };
 
     window.toggleCustSearch = () => {
+        const wrap = document.getElementById('custSearchWrap');
         const cat = document.getElementById('custCategoryFilter');
         const inp = document.getElementById('custInlineSearch');
         if(inp.classList.contains('d-none')) {
-            cat.classList.add('d-none'); inp.classList.remove('d-none'); inp.focus();
+            cat.classList.add('d-none'); inp.classList.remove('d-none');
+            wrap.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.remove('mb-4');
+            inp.focus();
         } else {
-            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = ''; window.renderCustomerCatalog();
+            cat.classList.remove('d-none'); inp.classList.add('d-none'); inp.value = '';
+            wrap.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'z-[100]', 'bg-white', 'p-4', 'shadow-md'); wrap.classList.add('mb-4');
+            window.renderCustomerCatalog();
         }
     };
 
@@ -1689,6 +1704,23 @@
         const filtered = [...STATE.data.products].filter(p => p.available && p.name.toLowerCase().includes(q)).sort((a,b) => a.name.localeCompare(b.name));
         document.getElementById('custProductGrid').innerHTML = filtered.map(p => buildProductCard(p, 'customer')).join('') || '<p class="col-span-full font-bold text-center mt-4">Produk tidak ditemukan.</p>';
     };
+
+    // Deteksi Klik di Luar Pencarian untuk Auto-Hide
+    document.addEventListener('click', (e) => {
+        const checkClose = (wrapId, gridId, searchInputId, toggleFn) => {
+            const wrap = document.getElementById(wrapId);
+            const grid = document.getElementById(gridId);
+            const inp = document.getElementById(searchInputId);
+            if(wrap && inp && !inp.classList.contains('d-none')) {
+                if(!wrap.contains(e.target) && (!grid || !grid.contains(e.target))) {
+                    window[toggleFn]();
+                }
+            }
+        };
+        checkClose('publicSearchWrap', 'publicProductGrid', 'publicInlineSearch', 'togglePublicSearch');
+        checkClose('custSearchWrap', 'custProductGrid', 'custInlineSearch', 'toggleCustSearch');
+        checkClose('posSearchWrap', 'adminPosProductGrid', 'posInlineSearch', 'togglePosSearch');
+    });
     setInterval(window.checkAdminWaitList, 15000);
 
     window.openAdminWaitingList = () => {
